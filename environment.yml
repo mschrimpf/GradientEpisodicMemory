@@ -1,0 +1,17 @@
+name: continual_learning
+channels:
+- defaults
+dependencies:
+  - python>=3.6
+  - numpy
+  - pytorch
+  - torchvision
+  - tensorflow-gpu
+  - cudatoolkit==9.0
+  - h5py
+  - Pillow
+  - cython
+  - matplotlib
+  - pip:
+    - quadprog
+
