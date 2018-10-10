@@ -28,6 +28,8 @@ def load_datasets(args):
     for i in range(len(d_tr)):
         n_outputs = max(n_outputs, d_tr[i][2].max())
         n_outputs = max(n_outputs, d_te[i][2].max())
+    if isinstance(n_outputs, torch.Tensor):
+        n_outputs = n_outputs.item()
     return d_tr, d_te, n_inputs, n_outputs + 1, len(d_tr)
 
 
@@ -99,7 +101,7 @@ def eval_tasks(model, tasks, args):
         x = task[1]
         y = task[2]
         rt = 0
-        
+
         eval_bs = x.size(0)
 
         for b_from in range(0, x.size(0), eval_bs):
