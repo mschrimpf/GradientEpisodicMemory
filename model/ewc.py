@@ -45,6 +45,7 @@ class Net(torch.nn.Module):
         else:
             self.nc_per_task = n_outputs
         self.n_outputs = n_outputs
+        assert args.n_memories > 0
         self.n_memories = args.n_memories
 
     def compute_offsets(self, task):
@@ -100,9 +101,9 @@ class Net(torch.nn.Module):
             if self.memx.size(0) < self.n_memories:
                 self.memx = torch.cat((self.memx, x.data.clone()))
                 self.memy = torch.cat((self.memy, y.data.clone()))
-                if self.memx.size(0) > self.n_memories:
-                    self.memx = self.memx[:self.n_memories]
-                    self.memy = self.memy[:self.n_memories]
+        if self.memx.size(0) > self.n_memories:
+            self.memx = self.memx[:self.n_memories]
+            self.memy = self.memy[:self.n_memories]
 
         self.net.zero_grad()
         if self.is_cifar:
