@@ -4,19 +4,20 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-import importlib
-import datetime
 import argparse
-import random
-import uuid
-import time
+import datetime
+import importlib
 import os
+import random
+import time
+import uuid
 
 import numpy as np
-
 import torch
-from torch.autograd import Variable
 from metrics.metrics import confusion_matrix
+from torch.autograd import Variable
+from tqdm import tqdm
+
 
 # continuum iterator #########################################################
 
@@ -130,6 +131,7 @@ def life_experience(model, continuum, x_te, args):
     current_task = 0
     time_start = time.time()
 
+    progress = tqdm(total=continuum.length)
     for (i, (x, t, y)) in enumerate(continuum):
         if(((i % args.log_every) == 0) or (t != current_task)):
             result_a.append(eval_tasks(model, x_te, args))
@@ -145,6 +147,8 @@ def life_experience(model, continuum, x_te, args):
 
         model.train()
         model.observe(Variable(v_x), t, Variable(v_y))
+        progress.update(continuum.current - progress.n)
+    progress.close()
 
     result_a.append(eval_tasks(model, x_te, args))
     result_t.append(current_task)
