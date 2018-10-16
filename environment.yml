@@ -14,4 +14,5 @@ dependencies:
   - matplotlib
   - pip:
     - quadprog
+    - fire
 
