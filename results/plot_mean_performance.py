@@ -42,8 +42,7 @@ def collect_data():
     data = pd.DataFrame({**{'basepath': files, 'performances': performances}, **args})
     data.to_csv(savepath)
 
-  data = data[(data['n_hiddens'] == 100) & (data['n_layers'] == 2) & (data['samples_per_task'] == 1000)]
-  # TODO: data = data[(data['n_hiddens'] == 1600) & (data['n_layers'] == 1) & (data['samples_per_task'] == 60000)]
+  data = data[(data['n_hiddens'] == 1600) & (data['n_layers'] == 1) & (data['samples_per_task'] == 60000)]
   return data
 
 
