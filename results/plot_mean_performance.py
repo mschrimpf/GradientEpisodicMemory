@@ -42,7 +42,7 @@ def collect_data():
     data = pd.DataFrame({**{'basepath': files, 'performances': performances}, **args})
     data.to_csv(savepath)
 
-  data = data[(data['n_hiddens'] == 1600) & (data['n_layers'] == 1) & (data['samples_per_task'] == 60000)]
+  data = data[(data['n_hiddens'] == 3200) & (data['n_layers'] == 1) & (data['samples_per_task'] == 60000)]
   return data
 
 
@@ -75,10 +75,9 @@ def memory_performances(dataset='mnist_permutations'):
   pyplot.savefig(f'memory-{dataset}.png')
 
 
-def mean_performance(model='ewc', dataset='mnist_permutations',
-                     identifier='2018_10_09_14_35_10_11b1023e748f45ec8e0b994bd3fac8f6'):
-  basepath = build_basepath(model=model, dataset=dataset, identifier=identifier)
-  mean_task_performances = get_task_performances(basepath)
+def mean_performance(model='ewc', dataset='mnist_permutations', n_memories=2):
+  data = collect_data()
+  data = data[(data['data_file'] == f"{dataset}.pt") & (data['model'] == model) & (data['n_memories'] == n_memories)]
 
   pyplot.plot(list(range(1, len(mean_task_performances) + 1)), mean_task_performances)
   pyplot.xlabel("Task Num")
